@@ -14,12 +14,12 @@ namespace RS232cTcpMarantz
 
         public async Task RunAsync(string[] args)
         {
-            Console.WriteLine("DotnetRS232cLAN started");
+            Console.WriteLine("RS232cTcpMarantz started");
 
             if (args.Length != 2)
             {
                 Console.WriteLine("Please provide a hostname/ipaddress and port.");
-                Console.WriteLine("e.g. `DotnetRS232cLAN.exe 192.168.1.3 23`"); // My marantz device uses telnet port 23
+                Console.WriteLine("e.g. `RS232cTcpMarantz.exe 192.168.1.3 23`"); // My marantz device uses telnet port 23
                 Environment.Exit(1);
             }
 
