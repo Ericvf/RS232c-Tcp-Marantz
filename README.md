@@ -1,30 +1,8 @@
-# Dotnet-RS232c-lan
-Control computer monitors and TV's using RS232 commands over LAN. 
-
-## Commands
-- PowerControl
-- InputModeSelection
-- Brightness
-- Size
-- ColorMode
-- WhiteBalance
-- RContrast
-- GContrast
-- BContrast
-- TelnetUsername
-- TelnetPassword
-- ThermalSensorSetting
-- Model
-- SerialNo
-- Auto
-- Reset
-- Volume
-- Mute
-- TemperatureSensor
-- Temperature
+# RS232c-Tcp-Marantz
+Control Marantz receivers using RS232 commands over TCP with Dotnet5.
 
 ## More info here:
 https://en.wikipedia.org/wiki/RS-232
 
 ## Screenshot
-![](https://github.com/Ericvf/Dotnet-RS232c-lan/blob/509282360e07147f36f8157a53b429630aab583b/screenshot.PNG)
+![](https://github.com/Ericvf/RS232c-Tcp-Marantz/blob/2f412f705c58c87327e7cff668a22ddfd55c04be/screenshot.PNG)
