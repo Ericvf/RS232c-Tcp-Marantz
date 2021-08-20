@@ -4,14 +4,12 @@ namespace RS232cTcpMarantz
 {
     public interface IRS232cTcpMarantzClient
     {
-        Task<string> Get(string command);
+        Task Start(string ipAddress, int port);
+
+        void Stop();
 
         bool IsConnected();
 
-        Task Start(string ipAddress, int port);
-
-        Task Stop();
-
-        Task<string> SendCommandAndGetResponse(string command);
+        string Get(string command);
     }
 }

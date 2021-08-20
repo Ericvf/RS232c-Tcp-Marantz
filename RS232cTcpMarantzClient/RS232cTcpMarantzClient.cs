@@ -14,7 +14,7 @@ namespace RS232cTcpMarantz
         private const int timeout = 500;
 
         private TcpClient? tcpClient;
-        private NetworkStream? netstream;
+        private NetworkStream? networkStream;
         private StreamWriter? writer;
 
         public RS232cTcpMarantzClient(ILogger<RS232cTcpMarantzClient> logger)
@@ -28,20 +28,23 @@ namespace RS232cTcpMarantz
 
             await tcpClient.ConnectAsync(ipAddress, port);
 
-            netstream = tcpClient.GetStream();
-            writer = new StreamWriter(netstream, Encoding.ASCII);
+            networkStream = tcpClient.GetStream();
+            writer = new StreamWriter(networkStream, Encoding.ASCII);
             writer.AutoFlush = true;
         }
 
-        public async Task Stop()
+        public void Stop()
         {
-            await SendCommandAndGetResponse("BYE");
-            netstream?.Dispose();
+            SendCommandAndGetResponse("BYE");
+            networkStream?.Dispose();
+            tcpClient?.Dispose();
         }
 
-        public Task<string> Get(string command) => SendCommandAndGetResponse(command);
+        public bool IsConnected() => tcpClient?.Connected == true;
 
-        public async Task<string> SendCommandAndGetResponse(string command)
+        public string Get(string command) => SendCommandAndGetResponse(command);
+
+        private string SendCommandAndGetResponse(string command)
         {
             logger.LogInformation("SendCommandAndGetResponse", command);
 
@@ -49,15 +52,18 @@ namespace RS232cTcpMarantz
             var chars = Encoding.ASCII.GetChars(bytes);
             writer!.Write(chars);
 
-            using var cancellationToken = new CancellationTokenSource();
-            cancellationToken.CancelAfter(timeout);
-
-            return await ReadOutput(netstream!, cancellationToken.Token);
+            return GetResponse();
         }
 
-        private Task<string> ReadOutput(NetworkStream networkStream, CancellationToken cancellationToken)
+        private string GetResponse()
         {
+            if (networkStream == null)
+                return string.Empty;
+
             var stringBuilder = new StringBuilder();
+
+            using var cancellationToken = new CancellationTokenSource();
+            cancellationToken.CancelAfter(timeout);
 
             while (!networkStream.DataAvailable && !cancellationToken.IsCancellationRequested);
 
@@ -69,14 +75,13 @@ namespace RS232cTcpMarantz
                 }
             }
 
-            return Task.FromResult(stringBuilder.ToString().Replace('\r', ' '));
+            return stringBuilder.ToString().Replace('\r', ' ');
         }
-
-        public bool IsConnected() => tcpClient?.Connected == true;
 
         public void Dispose()
         {
-            netstream?.Dispose();
+            networkStream?.Dispose();
+            tcpClient?.Dispose();
         }
     }
 }

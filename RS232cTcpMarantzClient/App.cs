@@ -34,36 +34,36 @@ namespace RS232cTcpMarantz
 
                 // Execute some default commands
                 Console.WriteLine("Checking power: ");
-                result = await rs232cClient.Get("PW?");
+                result = rs232cClient.Get("PW?");
                 Console.WriteLine(result);
                 Console.WriteLine();
 
                 Console.WriteLine("Turn ZONE2 on");
-                result = await rs232cClient.Get("Z2ON");
+                result = rs232cClient.Get("Z2ON");
 
                 Console.WriteLine("Turn ZONE2 to GAME");
-                result = await rs232cClient.Get("Z2GAME");
+                result = rs232cClient.Get("Z2GAME");
 
                 Console.WriteLine("Turn on receiver");
-                result = await rs232cClient.Get("PWON");
+                result = rs232cClient.Get("PWON");
 
                 Console.WriteLine("Set Main zone to Bluray");
-                result = await rs232cClient.Get("SIBD");
+                result = rs232cClient.Get("SIBD");
 
                 Console.WriteLine("Paused. Press space to turn off devices");
                 Console.ReadLine();
 
                 Console.WriteLine("Set Main zone to TV");
-                result = await rs232cClient.Get("SISAT/CBL");
+                result = rs232cClient.Get("SISAT/CBL");
 
                 Console.WriteLine("Turn ZONE2 to TV");
-                result = await rs232cClient.Get("SISAT/CBL");
+                result = rs232cClient.Get("SISAT/CBL");
 
                 Console.WriteLine("Turn ZONE2 off");
-                result = await rs232cClient.Get("Z2OFF");
+                result = rs232cClient.Get("Z2OFF");
 
-                Console.WriteLine("Turn off receiver");
-                result = await rs232cClient.Get("PWSTANDBY");
+                //Console.WriteLine("Turn off receiver");
+                //result = await rs232cClient.Get("PWSTANDBY");
 
                 // REPL
                 while (rs232cClient.IsConnected())
@@ -79,14 +79,14 @@ namespace RS232cTcpMarantz
                     else if (!string.IsNullOrEmpty(command))
                     {
                         // Evaluate
-                        var response = await rs232cClient.Get(command!);
+                        var response =  rs232cClient.Get(command!);
 
                         // Print
                         Console.WriteLine(response);
                     }
                 }
 
-                await rs232cClient.Stop();
+                rs232cClient.Stop();
             }
         }
     }
